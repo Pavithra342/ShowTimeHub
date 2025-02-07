@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>ShowTime | {{show.movie.movie_name}} </title>
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static "styles/seat.css" %}">
+<style>
+  .hall__screen {
+    background-image: url({{show.movie.movie_poster.url}});
+  }
+  .seat input[type="checkbox"]:checked + label {
+    background-color: red; /* Selected seats will be green */
+  }
+  .seat.notvacant label {
+    background-color: red; /* Booked seats will be red */
+    cursor: not-allowed;
+  }
+  .seat label {
+    background-color: white; /* Available seats will be white */
+    cursor: pointer;
+  }
+</style>
+{% endblock %}
+
+<div class="d-none">
+  <div class="col-2">
+    <img src="{{show.movie.movie_poster.url}}" height="300px">
+  </div>
+
+  <div class="col-3">
+    <h1 class="display-5"> {{show.movie.movie_name}} </h1>
+    <h1 class="display-5"> {{show.cinema.cinema_name}} </h1>
+    <h1 class="display-5"> {{show.time}} </h1>
+    <h1 class="display-5"> Rs {{show.price}} </h1>
+  </div>
+</div>
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 hall" style="background: linear-gradient(360deg, black, #1f1f1f);">
+      <form action="{% url 'booked' %}" method="POST" id="book">
+        {% csrf_token %}
+        <input type="hidden" value="{{show.shows}}" name="show" readonly>
+
+        <div class="hall__screen"></div>
+
+        <div class="seats">
+          {% for row in "ABCD" %}
+          <div class="row">
+            <h3 class="text-white m-2">{{ row }}</h3>
+            {% for seat_num in "12345678910" %}
+            <div class="seat" id="{{ row }}{{ seat_num }}">
+              <input type="checkbox" value="#{{ row }}{{ seat_num }}" id="seat{{ row }}{{ seat_num }}" name="check" />
+              <label for="seat{{ row }}{{ seat_num }}"></label>
+            </div>
+            {% if forloop.counter == 2 or forloop.counter == 8 %}
+            <div class="space"></div>
+            {% endif %}
+            {% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row bottom">
+    <div class="col-9">
+      <h1 class="text-white">Selected Seats : <span id="slots"></span></h1>
+    </div>
+    <div class="col-3">
+      {% if user.is_authenticated %}
+      <button type="submit" form="book" class="btn btn-lg btn-block btn-primary"> Confirm Booking </button>
+      {% else %}
+      <a href="/accounts/login" class="btn btn-lg btn-block btn-danger"> Login To Book </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block JQuery %}
+{% for seat in seat %}
+<script type="text/javascript">
+  $("{{ seat.useat }}").addClass("notvacant").children("input").prop("disabled", true);
+  $("{{ seat.useat }}").children("label").css("background-color", "red");
+</script>
+{% endfor %}
+
+<script type="text/javascript">
+  $(".seat").click(function () {
+    var favorite = [];
+    $.each($("input[name='check']:checked"), function () {
+      favorite.push($(this).val());
+    });
+
+    $("#slots").empty().append(favorite.join(", "));
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>ShowTimeHub</title>
+{% endblock %}
+
+{% block JQuery %}
+{% if book.pk %}
+<script>
+    window.onload = function () {
+        window.location.href = "{% url 'ticket' book.pk %}";
+    };
+</script>
+{% else %}
+<script>
+    window.onload = function () {
+        alert("An error occurred. Please try again later.");
+    };
+</script>
+{% endif %}
+{% endblock %}
