@@ -1,3 +1,7 @@
 # ShowTimeHub
 
-The main objective of the Project on Online Movie Ticket Booking System is to manage the details of Movie, Tickets, Booking, Show Timing, Customer. It manages all the information about Movie, Audi, Customer, Movie. The project is totally built at administrative end and thus only the administrator is guaranteed the access. The purpose of the project is to build an application program to reduce the manual work for managing the Movie, Tickets, Audi, Booking. It tracks all the details about the Booking, Show Timing, Customer. Additionally, after booking a ticket, the customer will receive a confirmation email with all the booking details.  
+The main objective of the BoxOffice Online Movie Ticket Booking System is to manage the details of Movies, Tickets, Bookings, Show Timings, and Customers. It handles all the information about Movies, Auditoriums (Audi), and Customers efficiently. The project is entirely built for administrative use, ensuring that only the administrator has access.
+
+The purpose of the project is to develop an application that reduces manual effort in managing Movies, Tickets, Audis, and Bookings. It tracks all details related to Bookings, Show Timings, and Customers.
+
+Additionally, after booking a ticket, the customer will receive a confirmation email with all the booking details.
